@@ -3,6 +3,7 @@ import { TYPES } from '../actions/shoppingActions';
 import { shoppingInitialState, shoppingReducer } from '../reducers/shoppingReducer'
 import CartItem from './CartItem';
 import ProductItem from './ProductItem';
+import TotalAmount from './TotalAmount';
 
 const ShoppingCart = () => {
   const [state, dispatch] = useReducer(shoppingReducer, shoppingInitialState);
@@ -14,11 +15,22 @@ const ShoppingCart = () => {
     dispatch({type: TYPES.ADD_TO_CART, payload: id });
   };
 
-  const delFromCart = (id) => {
-    dispatch({type: TYPES.REMOVE_ONE_FROM_CART, payload: id })
+  const delFromCart = (id, all = false) => {
+    console.log(id, all);
+    if(all){
+      dispatch({type: TYPES.REMOVE_ALL_FROM_CART, payload: id })
+    } else {
+      dispatch({type: TYPES.REMOVE_ONE_FROM_CART, payload: id })
+    }
   };
 
-  const clearCart = () => {};
+  const clearCart = () => {
+    dispatch({type: TYPES.CLEAR_CART})
+  };
+
+  const TotalAmountEnd = () => {
+    dispatch({type: TYPES.TOTAL_AMOUNT})
+  };
 
   return (
     <div >
@@ -45,6 +57,10 @@ const ShoppingCart = () => {
                 delFromCart={delFromCart}
                 />)
         }
+      </article>
+
+      <article className='box'>
+        <TotalAmount amount={() => TotalAmountEnd}/>
       </article>
     </div>
   )
